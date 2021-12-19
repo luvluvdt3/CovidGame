@@ -301,8 +301,8 @@
       textFont('Permanent Marker');
       textNeon(`${highScore}`, boundX/1.4-10, boundY/3,color(332, 58, 91, 100));
       textNeon(`NEW HIGH SCORE`, boundX/4+10, boundY/3,color(332, 58, 91, 100));
-      textSize(30);    
-      text(`Please enter your name :`, boundX/3+10, boundY/2-30);
+      //textSize(30);    
+      //text(`Please enter your name :`, boundX/3+10, boundY/2-30);
       textSize(12);
       //champion=championS.value();
 
