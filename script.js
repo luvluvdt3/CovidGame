@@ -1,10 +1,12 @@
    
+   // Import the functions you need from the SDKs you need
+   
    let cats, time, player,boundX, boundY;
    let numSaved= 0;
    let diameter=75;
    let restartBtn, resFinalString="", gameOver =false;
    let playerI, catI, catInDangerI, championS;
-   let highScore=0, champion="",isNewRecord="false" ;
+   let highScore=0, champion="",isNewRecord="false", database ;
    function preload() {
      playerI=loadImage('https://cdn.glitch.me/f44b3a75-5142-4137-ab78-df8f3d202ffc%2Fplayer.png?v=1638891925918');
      catI=loadImage('https://cdn.glitch.me/f44b3a75-5142-4137-ab78-df8f3d202ffc%2Fnormal.png?v=1638891959865');
@@ -41,7 +43,41 @@
     }
 
     highScore=getItem('highScore');
-    champion=getItem('newChampion');
+    //champion=getItem('champion');
+
+    var config = {
+      apiKey: "AIzaSyBFmbCpECaybC73EouLcBNTH8BQH7ddYT8",
+      authDomain: "covidgame-79b22.firebaseapp.com",
+      databaseURL: "https://covidgame-79b22-default-rtdb.firebaseio.com",
+      projectId: "covidgame-79b22",
+      storageBucket: "covidgame-79b22.appspot.com",
+      messagingSenderId: "944160173029"
+  }
+    firebase.initializeApp(config); 
+    //console.log(firebase);
+    var database=firebase.database();
+
+    // const db=firebase.firestore();
+    // db.settings({timestampsInSnapshots:true});
+    // db.collection('scores').get().then((snapshot)=>{
+    //   console.log(snapshot.docs);
+    // });
+//     var docRef = db.collection("scores");
+//     docRef.get().then((doc) => {
+//     if (doc.exists) {
+//         console.log("Document data:", doc.data());
+//     } else {
+//         // doc.data() will be undefined in this case
+//         console.log("No such document!");
+//     }
+// }).catch((error) => {
+//     console.log("Error getting document:", error);
+// });
+    var ref= database.ref('scores');
+    var data={
+      score:highScore
+    }
+    ref.push(data);
     //NEED kinda show the rule for a few seconds for getting started?
     }
    
@@ -54,7 +90,8 @@
     textStyle(BOLD);
     text(`Score : ${numSaved}`,20,windowHeight-45);
     textStyle(BOLD);
-    text(` High Score : ${highScore} - Champion : ${champion}`,90,windowHeight-45);
+    text(` High Score : ${highScore} `,90,windowHeight-45);
+    //- Champion : ${champion}
     checkGameOver();
     player.livesDisplay();
     if(gameOver==false){
@@ -63,6 +100,7 @@
       if (compteur==120){ //new cat every 2 seconds
         cats.push(new cat(random(diameter+15, boundX-diameter-15),random(15,boundY-diameter-25)));
         compteur=0;
+        
       }
     }
     else{
@@ -70,6 +108,7 @@
         restartBtn.show();
         newHighScore();   
         restartBtn.mousePressed(resetSim);
+        gameOver=false;
       }
 
     }
@@ -242,14 +281,14 @@
     //NEED to check if blurb works like this
   }
   function isHighScore(){
-    if(numSaved>highScore){
+    if(numSaved>highScore && gameOver==true){
       storeItem('highScore',numSaved);
       highScore=numSaved;
       isNewRecord=true;
-      championS=createInput();
-      championS.position(boundX/1.55, boundY/2.5);
-      championS.size(85,30);
-      newChampion=championS.value();
+      // championS=createInput();
+      // championS.position(boundX/1.55, boundY/2.5);
+      // championS.size(85,30);
+      // champion=championS.value();
       textSize(12);
     }
   }
@@ -265,7 +304,8 @@
       textSize(30);    
       text(`Please enter your name :`, boundX/3+10, boundY/2-30);
       textSize(12);
-      champion=championS.value();
+      //champion=championS.value();
+
       
     }
     else{
