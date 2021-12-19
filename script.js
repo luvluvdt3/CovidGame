@@ -43,6 +43,10 @@
     }
 
     highScore=getItem('highScore');
+    highScore1=104;
+      if(highScore<highScore1){
+         highScore=highScore1;
+      }
     //champion=getItem('champion');
 
     var config = {
