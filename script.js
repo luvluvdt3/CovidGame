@@ -43,7 +43,7 @@
     }
 
     highScore=getItem('highScore');
-    highScore1=104;
+    highScore1=785;
       if(highScore<highScore1){
          highScore=highScore1;
       }
